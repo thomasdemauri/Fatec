@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define LEN 100
+#define LEN 4
 #define BASIC_BUFFET 50
 #define MEDIUM_BUFFET 80
 #define DELUXE_BUFFET 120
@@ -108,6 +108,11 @@ int calculateTotalPeople() {
     return acc;
 }
 
+/* 
+    Calcula a porcentagem da relacao entre os buffets totais e o buffet escolhido. 
+    Para isso e necessario conferir quantas inscricoes estao de fato efetivadas em vez
+    de levar em consideracao o tamanho total do array.
+*/
 float calculateBuffetTypePercentage(int buffetType) {
     int typeSubscriptions = 0, allSubscriptions = 0;
     for (int i=0; i<LEN; i++) {
@@ -148,10 +153,20 @@ float calculateAvgExclusiveService() {
     return avg = acc / counter;
 }
 
+/* 
+    Retorna o ID de maior inscricao.
+    Pergunta se o vizinho (posicao atual + 1) e maior que a propria posicao e 
+    o maior valor sera armazenado na variavel responsavel.
+*/
 int calculateGreaterValue() {
     int gtIdSubscription = 0;
 
     for (int i=0; i<LEN; i++) {
+
+        if (i > LEN - 2) {
+            break;
+        }
+
         if (totalValue[i + 1] > totalValue[i]) {
             gtIdSubscription = idSubscription[i + 1];
         }
@@ -160,6 +175,13 @@ int calculateGreaterValue() {
     return gtIdSubscription; 
 }
 
+/*
+    Passa em cada posicao perguntando se o vizinho e maior, em caso positivo
+    troca de posicao e para isso e necessario criar as variaveis temporarias.
+    Neste caso, e necessario perguntar para cada item o total de vezes que o tamanho do array.
+
+    Lembrete: Posso otimizar o codigo substituindo o LEN pelo valor exato de inscricoes efetivadas.
+*/
 void orderByTotalValue() {
 
     int tmpIdSubscription;
@@ -209,11 +231,17 @@ void orderByTotalValue() {
     }
 }
 
+/*
+    Calcula o valor base da inscricao, sem descontos ou acrescimos.
+*/
 void calculateBaseValue() {
     baseValue[currentIndex] = qtyPeople[currentIndex] * pricePerPerson[currentIndex];
     return;
 }
 
+/*
+    Define o preco por categoria
+*/
 void definePriceByCategory() {
     switch (buffetCategoryType[currentIndex]) {
     case BF_BASICO:
@@ -232,10 +260,17 @@ void definePriceByCategory() {
     return;
 }
 
+/*
+    Verifica atraves do indice se o array esta cheio. Caso o indice seja igual o tamanho
+    do array ja esta no limite. Pois, o ultimo indice disponivel e len - 1
+*/
 bool limitExceeded() {
     return currentIndex >= LEN ? true : false;
 }
 
+/*
+    Calcula a taxa adicional de servico exclusivo de bebida
+*/
 void calculateAdditionalTaxes() {
     if (exclusiveService[currentIndex] == 1) {
         additionalTaxes[currentIndex] = EXCLUSIVE_SERVICE_TAX * baseValue[currentIndex];
@@ -243,6 +278,9 @@ void calculateAdditionalTaxes() {
     return;
 }
 
+/*
+    Calcula os descontos a partir do numero de pessoas no evento
+*/
 void calculateDiscountByQtyPeople() {
     if (qtyPeople[currentIndex] > 20 && qtyPeople[currentIndex] <= 50) {
         discountByQtyPeople[currentIndex] = DISCOUNT_1 * baseValue[currentIndex];
@@ -254,11 +292,17 @@ void calculateDiscountByQtyPeople() {
     return;
 }
 
+/*
+    Calcula o valor final com taxas e acrescimos
+*/
 void calculateTotalValue() {
     totalValue[currentIndex] = baseValue[currentIndex] + additionalTaxes[currentIndex] - discountByQtyPeople[currentIndex];
     return;
 }
 
+/*
+    Responsavel por organizar a ordem de todos os calculos da inscricao
+*/
 void calculate() {
     definePriceByCategory();
     calculateBaseValue();
@@ -309,6 +353,10 @@ void addContract() {
     }
 }
 
+/*
+    Responsavel por confirmar se o usuario quer continuar adicionando
+    inscricoes, caso negativo volta para o menu inicial, retornando falso
+*/
 bool wantsToContinue() {
     int keepAdding = -1;
 
@@ -373,7 +421,7 @@ int showMenu() {
         system("cls");
         printf("\nMenu\n");
         printf("[0] Sair\n");
-        printf("[1] Inserir mais contratos\n");
+        printf("[1] Inserir contratos\n");
         printf("[2] Apresentar resultados\n");
         printf("[3] Ordernar os contratos pelo valor total (descrescente)\n");
         printf("[4] Imprimir registros de contratos\n");
@@ -390,11 +438,13 @@ void initializeArrays() {
         idSubscription[i] = 0;
         buffetCategoryType[i] = 0;
         qtyPeople[i] = 0;
+        exclusiveService[i] = 0;  
         pricePerPerson[i] = 0;
-        exclusiveService[i] = 0;
         additionalTaxes[i] = 0;
         discountByQtyPeople[i] = 0;
+        buffetTypeeValue[i] = 0;
         totalValue[i] = 0;
+        baseValue[i] = 0;
     }
     return;
 }

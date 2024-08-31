@@ -130,13 +130,20 @@ float calculateBuffetTypePercentage(int buffetType) {
 }
 
 float calculateAvgAll() {
-    float acc = 0, avg = 0;
+    float acc = 0, allSubscriptions = 0;
 
     for (int i=0; i<LEN; i++) {
+
+        if (idSubscription[i] == 0) {
+            continue;
+        }
+
+        allSubscriptions++;
+
         acc += totalValue[i];
     }
 
-    return avg = acc / LEN;
+    return acc / allSubscriptions;
 }
 
 float calculateAvgExclusiveService() {

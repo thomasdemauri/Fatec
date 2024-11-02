@@ -37,8 +37,6 @@ int i_maior_viagem, i_menor_viagem;         // índice no array de viagens do av
 
 int main() {
 
-    bool sair = false;
-
     system("clear");
     printf("GERENCIAMENTO DE AVIOES E VOOS\n");
 

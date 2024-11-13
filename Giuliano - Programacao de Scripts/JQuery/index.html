@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JQuery</title>
+    <script type="text/javascript" src="jquery-3.7.1.min.js"></script>
+    <script>
+        // $ e a mesma coisa que jQuery
+        // () e o seletor 
+        $(document).ready(() => {
+            $('#btnCarregar').click(() => {
+                $.ajax({
+                    url: 'https://jsonplaceholder.typicode.com/users',
+                    method: 'GET',
+                    contentType: 'text/plain',
+                    complete: (res) => {
+                        let usuarios = JSON.parse(res.responseText);
+                        console.log(usuarios);
+                        $.each(usuarios, (index, item) => {
+                            $('#tabelaUsuarios').append(
+                                `<tr><td>${item.id}</td><td>${item.name}</td></tr>`
+                            );
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <button id="btnCarregar">Carregar dados do servidor</button>
+    </div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaUsuarios"></tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+
+    <div id="app">
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">
+                <img src="img/bola-de-praia.png" alt="Logo" width="30" class="d-inline-block align-text-top">
+                SystemParts
+              </a>
+            </div>
+          </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <form action="">
+                        <div class="mb-3 mt-3">
+                            <label for="codFabricante" class="form-label">Código do fabricante</label>
+                            <input type="text" class="form-control" id="codFabricante" v-model="produtoAtual.codFabricante">
+                        </div>
+                        <div class="mb-3">
+                            <label for="fabricante" class="form-label">Fabricante</label>
+                            <input type="text" class="form-control" id="fabricante" v-model="produtoAtual.fabricante">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descricao" class="form-label">Descrição do item</label>
+                            <input type="text" class="form-control" id="descricao" v-model="produtoAtual.descricao">
+                        </div>
+                        <div class="mb-3">
+                            <label for="valorCusto" class="form-label">Valor de custo</label>
+                            <input type="number" step="0.01" min="0.0" class="form-control" id="valorCusto" v-model="produtoAtual.valorCusto">
+                        </div>
+                        <div class="mb-3">
+                            <label for="valorVenda" class="form-label">Valor de venda</label>
+                            <input type="number" step="0.01" min="0.0" class="form-control" id="valorVenda" v-model="produtoAtual.valorVenda">
+                        </div>
+                        <button class="btn btn-success" @click.prevent="cadastraOuEditaProduto()" :disabled="!validaCampos()">{{ labelBtn }}</button>
+                    </form>
+                </div>
+
+                <div class="mt-4 col-md-8">
+                    <table class="table table-striped table-bordered mt-3">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th style="width: 15%;">Fabricante</th>
+                                <th style="width: 50%;">Descrição</th>
+                                <th style="width: 20%;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(produto, index) in produtos" :key="index" v-if="produtos.length > 0">
+                                <td>{{ produto.codFabricante }}</td>
+                                <td>{{ produto.fabricante }}</td>
+                                <td>{{ produto.descricao }}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" @click="habilitaModoEdicao(index)">Editar</button>
+                                    <button class="btn btn-danger btn-sm" @click="removeProduto(index)">Excluir</button>
+                                    <button class="btn btn-warning btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#infoProdutoModal">
+                                        Info
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="infoProdutoModal" tabindex="-1" aria-labelledby="infoProdutoModal" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informações adicionais</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p><strong>Custo: </strong>{{ formataMoeda(produto.valorCusto) }}</p>
+                                                <p><strong>Venda: </strong>{{ formataMoeda(produto.valorVenda) }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr v-if="produtos.length == 0">
+                                <td colspan="4" class="text-center">Nenhum produto encontrado</td>
+                            </tr>           
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <footer class="bg-body-tertiary text-black-50 text-center fixed-bottom">
+            <div class="container py-2">
+                <p>&copy; Desenvolvido por <strong>Thomas Mauro</strong> com muito carinho <i class="bi bi-heart-fill text-danger fs-6"></i>.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

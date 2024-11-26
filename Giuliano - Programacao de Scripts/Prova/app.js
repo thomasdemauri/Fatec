@@ -1,10 +1,11 @@
 class Produto {
-    constructor (codFabricante, fabricante, descricao, valorCusto, valorVenda) {
+    constructor (codFabricante, fabricante, descricao, valorCusto, valorVenda, estoque) {
         this.codFabricante = codFabricante;
         this.fabricante = fabricante;
         this.descricao = descricao;
         this.valorCusto = valorCusto;
         this.valorVenda = valorVenda;
+        this.estoque = estoque;
     }
 }
 
@@ -16,7 +17,8 @@ const app = new Vue({
             fabricante: '',
             descricao: '',
             valorCusto: '',
-            valorVenda: ''
+            valorVenda: '',
+            estoque: ''
         },
         produtos: [],
         modoEdicao: false,
@@ -37,7 +39,8 @@ const app = new Vue({
                     this.produtoAtual.fabricante,
                     this.produtoAtual.descricao,
                     this.produtoAtual.valorCusto,
-                    this.produtoAtual.valorVenda
+                    this.produtoAtual.valorVenda,
+                    this.produtoAtual.estoque
                 );
     
                 this.produtos.push(produto);
@@ -47,7 +50,8 @@ const app = new Vue({
                     fabricante: '',
                     descricao: '',
                     valorCusto: '',
-                    valorVenda: ''
+                    valorVenda: '',
+                    estoque: ''
                 }
 
             // Modo de edição
@@ -61,7 +65,8 @@ const app = new Vue({
                     fabricante: '',
                     descricao: '',
                     valorCusto: '',
-                    valorVenda: ''
+                    valorVenda: '',
+                    estoque: ''
                 }
 
                 // Reseta valores para o padrão
@@ -90,7 +95,7 @@ const app = new Vue({
         validaCampos() {
             // Sera chamada cada vez que algum dos v-models (inputs) abaixo for modificado
             return this.produtoAtual.codFabricante && this.produtoAtual.fabricante && this.produtoAtual.descricao
-                    && this.produtoAtual.valorCusto && this.produtoAtual.valorVenda;
+                    && this.produtoAtual.valorCusto && this.produtoAtual.valorVenda && this.produtoAtual.estoque;
         },
         formataMoeda(valor) {
             if (!valor) {
@@ -98,6 +103,12 @@ const app = new Vue({
             }
             valor = parseFloat(valor);
             return valor.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+        },
+        formataUnidade(valor) {
+            if (!valor) {
+                return '0,00';
+            }
+            return  `${valor} Unidades`;
         }
     },
 });

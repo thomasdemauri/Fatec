@@ -88,9 +88,11 @@ const app = new Vue({
             this.labelBtn = 'Salvar';
         },
         removeProduto(indexProduto) {
-            this.indexProduto = indexProduto;
-            this.produtos.splice(this.indexProduto, 1);
-            this.indexProduto = -1;
+            if (confirm("Deseja realmente excluir o produto?")) {
+                this.indexProduto = indexProduto;
+                this.produtos.splice(this.indexProduto, 1);
+                this.indexProduto = -1;
+            }
         },
         validaCampos() {
             // Sera chamada cada vez que algum dos v-models (inputs) abaixo for modificado

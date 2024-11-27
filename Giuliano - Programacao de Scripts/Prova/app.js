@@ -99,6 +99,10 @@ const app = new Vue({
             return this.produtoAtual.codFabricante && this.produtoAtual.fabricante && this.produtoAtual.descricao
                     && this.produtoAtual.valorCusto && this.produtoAtual.valorVenda && this.produtoAtual.estoque;
         },
+        habilitaAcoes() {   
+            // Responsavel por habilitar/desabilitar os botoes se estiver em modo de edicao
+            return this.modoEdicao;
+        },
         formataMoeda(valor) {
             if (!valor) {
                 return 'R$ 0,00';
@@ -111,6 +115,21 @@ const app = new Vue({
                 return '0,00';
             }
             return  `${valor} Unidades`;
+        },
+        custoEstoque() {
+            return this.produtos.reduce((acc, produto, ) => {
+                return acc + (parseFloat(produto.valorCusto || 0) * produto.estoque);
+            }, 0);
+        },
+        vendaEstoque() {
+            return this.produtos.reduce((acc, produto) => {
+                return acc + (parseFloat(produto.valorVenda || 0) * produto.estoque);
+            }, 0);
+        },
+        saldoEstoque() {
+            venda = this.vendaEstoque();
+            custo = this.custoEstoque();
+            return venda - custo;
         }
     },
 });
